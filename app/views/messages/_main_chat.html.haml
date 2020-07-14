@@ -2,50 +2,22 @@
   .main-header
     .main-header__left-box
       .main-header__left-box__current-group
-        group-name
+        = @group.name
       %ul.main-header__left-box__members
-        Member:
-        %li.member
-          name
-        %li.member
-          name
-        %li.member
-          name
+        Member :  
+        - @group.users.each do |group_user|
+          = group_user.name
     .main-header__edit-box
-      = link_to "Edit"
+      = link_to 'Edit', edit_group_path(@group)
+
   .messages
-    .message
-      .upper-message
-        .upper-message__user-name
-          メンバー
-        .upper-message__date
-          2020/6/12
-      .lower-message
-        .lower-message__content
-          message
-    .message
-      .upper-message
-        .upper-message__user-name
-          メンバー
-        .upper-message__date
-          2020/6/12
-      .lower-message
-        .lower-message__content
-          message
-    .message
-      .upper-message
-        .upper-message__user-name
-          メンバー
-        .upper-message__date
-          2020/6/12
-      .lower-message
-        .lower-message__content
-          message
+    = render @messages
+
   .form
-    %form
-      %input.form__message
+    = form_for [@group, @message] do |f|
+      = f.text_field :content, class: 'form__message', placeholder: 'type a message'
       .form__mask
-        %lable.form__mask__image
-          = icon('fa','image',class: 'icon')
-          %input.hidden{type: 'file'}
-      %input.form__submit{type: 'submit',value: 'Send'}
+        = f.label :image, class: 'form__mask__image' do
+          = icon('fas', 'image', class: 'icon')
+          = f.file_field :image, class: 'hidden'
+      = f.submit 'Send', class: 'form__submit'
